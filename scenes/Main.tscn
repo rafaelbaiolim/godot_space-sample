@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=1]
+[gd_scene load_steps=10 format=1]
 
 [ext_resource path="res://scenes/meteorSpawner.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/meteorSpawner.gd" type="Script" id=2]
@@ -6,11 +6,16 @@
 [ext_resource path="res://sprites/PNG/Effects/star1.png" type="Texture" id=4]
 [ext_resource path="res://scenes/power_up_tiro_rapido.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/power_up_tiro_duplo.tscn" type="PackedScene" id=6]
+[ext_resource path="res://fonts/score.fnt" type="BitmapFont" id=7]
 
 [sub_resource type="GDScript" id=1]
 
 resource/name = "parallax_camera"
 script/source = "extends Camera2D\nvar velocidade = 50\nvar vibracao = 0 #vibração da câmera\nfunc _ready():\n\tset_process(true)\n\tpass\n\nfunc _process(delta):\n\tset_offset(get_offset() + Vector2(0,-1) * velocidade * delta) # -1 camera se mova para cima , estrelas descem\n\t\n\tif vibracao > 0:\n\t\tset_pos(Vector2(cos(rad2deg(vibracao)),sin(rad2deg(vibracao)) * 5))\n\t\tvibracao -= delta\n\telse:\n\t\tset_pos(Vector2(0,0))\t\t\n\tpass\n\nfunc vibrar_tela():\n\tvibracao = 0.5\n\tpass"
+
+[sub_resource type="GDScript" id=2]
+
+script/source = "extends Label\n\n# class member variables go here, for example:\n# var a = 2\n# var b = \"textvar\"\n\nfunc _ready():\n\tgame.connect(\"score_changed\",self,\"_on_score_changed\") \n\tpass\n\n#só muda quando o meteoro muda\nfunc _on_score_changed():\n\tset_text(str(game.score))\n\t"
 
 [node name="Main" type="CanvasLayer"]
 
@@ -25,6 +30,7 @@ script/script = ExtResource( 2 )
 
 [node name="camera" type="Camera2D" parent="."]
 
+editor/display_folded = true
 anchor_mode = 0
 rotating = false
 current = true
@@ -49,6 +55,7 @@ transform/pos = Vector2( 322.48, 445.464 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
+editor/display_folded = true
 layer = -1
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -149,5 +156,31 @@ transform/scale = Vector2( 1, 1 )
 [node name="power_up_tiro_rapido 2" parent="." instance=ExtResource( 6 )]
 
 transform/pos = Vector2( 179.373, 446.173 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+layer = 11
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+
+[node name="scoreLabel" type="Label" parent="HUD"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 335.0
+margin/top = 11.0
+margin/right = 635.0
+margin/bottom = 65.0
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "0"
+align = 2
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+script/script = SubResource( 2 )
 
 

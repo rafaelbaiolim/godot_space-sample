@@ -2,6 +2,8 @@ extends Area2D
 var velocidade = 130
 var rotacao = 0
 var vida = 2
+var pontos = 10
+
 func _ready():
 	add_to_group(game.GRUPO_INIMIGO) #game esta como singleton
 	randomize()
@@ -18,6 +20,7 @@ func aplicar_dano(valor):
 	get_node("anim").play("hit")
 	vida -= valor
 	if vida <= 0:
+		game.score += pontos
 		get_node("sample").play("explosion")
 		set_process(true)
 		set_z(10)
