@@ -1,0 +1,148 @@
+[gd_scene load_steps=12 format=1]
+
+[ext_resource path="res://scripts/fabricaDeMeteoros.gd" type="Script" id=1]
+[ext_resource path="res://sprites/PNG/Meteors/meteorBrown_big1.png" type="Texture" id=2]
+[ext_resource path="res://scripts/meteoro.gd" type="Script" id=3]
+[ext_resource path="res://sprites/PNG/Meteors/meteorBrown_big2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/PNG/Meteors/meteorBrown_big3.png" type="Texture" id=5]
+[ext_resource path="res://sprites/PNG/Meteors/meteorGrey_big3.png" type="Texture" id=6]
+
+[sub_resource type="ConvexPolygonShape2D" id=2]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -34.3646, -40.2136, 20.7673, -38.7434, 47.9657, -3.45895, 35.4691, 32.5606, 12.6813, 27.4149, -51.2717, 12.7131 )
+
+[sub_resource type="ConvexPolygonShape2D" id=3]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -51.2717, 12.7131, 12.6813, 27.4149, -19.6352, 40.3039 )
+
+[sub_resource type="GDScript" id=1]
+
+script/source = "extends Area2D\nvar velocidade = 130\nvar rotacao = 0\nexport var vida = 2\nexport var pontos = 10\n\nfunc _ready():\n\tadd_to_group(game.GRUPO_INIMIGO) #game esta como singleton\n\trandomize()\n\tset_process(true)\n\trotacao = rand_range(-2, 2)\n\tpass\n\t\nfunc _process(delta):\n\tset_pos(get_pos() + Vector2(0,1) * velocidade * delta)\n\trotate(rotacao * delta)\n\tpass\n\t\nfunc aplicar_dano(valor):\n\t#get_node(\"anim\").play(\"hit\")\n\tvida -= valor\n\tif vida <= 0:\n\t\tgame.score += pontos\n\t\t#get_node(\"sample\").play(\"explosion\")\n\t\tset_process(true)\n\t\tset_z(10)\n\t\tremove_from_group(game.GRUPO_INIMIGO)\n\t\t#get_node(\"anim\").play(\"destory\")\n\t\tgame.getCamera().vibrar_tela()\n\tpass\n\t\n"
+
+[sub_resource type="ConvexPolygonShape2D" id=4]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -58.9115, -3.90767, -38.6535, -39.657, 6.62891, -45.218, 58.664, -28.535, 44.7615, 16.3503, -11.2457, 34.2249, -54.5421, 26.2806 )
+
+[sub_resource type="ConvexPolygonShape2D" id=5]
+
+custom_solver_bias = 0.0
+points = Vector2Array( -11.2457, 34.2249, -27.1343, 46.9358, -54.5421, 26.2806 )
+
+[node name="fabricaDeMeteoros" type="Node"]
+
+script/script = ExtResource( 1 )
+
+[node name="meteoro" type="Area2D" parent="."]
+
+transform/pos = Vector2( 81, 48 )
+input/pickable = true
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1.01945, 0, 0, 1.01652, 1.57661, -1.06477 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 3 )
+shapes/1/transform = Matrix32( 1.01945, 0, 0, 1.01652, 1.57661, -1.06477 )
+shapes/1/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = SubResource( 1 )
+vida = 2
+pontos = 10
+
+[node name="sprite" type="Sprite" parent="meteoro"]
+
+texture = ExtResource( 2 )
+
+[node name="colider" type="CollisionPolygon2D" parent="meteoro"]
+
+transform/pos = Vector2( 1.57661, -1.06477 )
+transform/scale = Vector2( 1.01945, 1.01652 )
+build_mode = 0
+polygon = Vector2Array( -34.3646, -40.2136, 20.7673, -38.7434, 47.9657, -3.45895, 35.4691, 32.5606, 12.6813, 27.4149, -19.6352, 40.3039, -51.2717, 12.7131 )
+shape_range = Vector2( 0, 1 )
+trigger = false
+
+[node name="meteoro1" type="Area2D" parent="."]
+
+transform/pos = Vector2( 230.75, 61.9025 )
+input/pickable = true
+shapes/0/shape = SubResource( 4 )
+shapes/0/transform = Matrix32( 1.02834, 0, 0, 1.07288, 1.25875, -0.42075 )
+shapes/0/trigger = false
+shapes/1/shape = SubResource( 5 )
+shapes/1/transform = Matrix32( 1.02834, 0, 0, 1.07288, 1.25875, -0.42075 )
+shapes/1/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 3 )
+vida = 2
+pontos = 10
+
+[node name="sprite" type="Sprite" parent="meteoro1"]
+
+texture = ExtResource( 4 )
+
+[node name="colider" type="CollisionPolygon2D" parent="meteoro1"]
+
+transform/pos = Vector2( 1.25875, -0.42075 )
+transform/scale = Vector2( 1.02834, 1.07288 )
+build_mode = 0
+polygon = Vector2Array( -27.1343, 46.9358, -54.5421, 26.2806, -58.9115, -3.90767, -38.6535, -39.657, 6.62891, -45.218, 58.664, -28.535, 44.7615, 16.3503, -11.2457, 34.2249 )
+shape_range = Vector2( 0, 1 )
+trigger = false
+
+[node name="meteoro2" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( 403.186, 62.5012 )
+input/pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 3 )
+vida = 2
+pontos = 10
+
+[node name="sprite" type="Sprite" parent="meteoro2"]
+
+texture = ExtResource( 5 )
+
+[node name="colider" type="CollisionPolygon2D" parent="meteoro2"]
+
+build_mode = 0
+polygon = Vector2Array( -44.3801, -18.5174, -10.252, -37.0782, 28.6659, -25.7022, 41.8381, 1.24096, 20.2835, 41.3563, -29.4117, 32.3753, -41.3864, 12.0182 )
+shape_range = Vector2( -1, -1 )
+trigger = false
+
+[node name="meteoro3" type="Area2D" parent="."]
+
+editor/display_folded = true
+transform/pos = Vector2( 563.851, 55.853 )
+input/pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = ExtResource( 3 )
+vida = 2
+pontos = 10
+
+[node name="sprite" type="Sprite" parent="meteoro3"]
+
+texture = ExtResource( 6 )
+
+[node name="colider" type="CollisionPolygon2D" parent="meteoro3"]
+
+build_mode = 0
+polygon = Vector2Array( -44.0469, -22.4533, -8.5899, -41.2899, 33.5153, -29.1015, 46.8117, -2.50872, 21.0449, 40.3042, -27.0238, 33.4526, -44.0469, 14.1118 )
+shape_range = Vector2( -1, -1 )
+trigger = false
+
+

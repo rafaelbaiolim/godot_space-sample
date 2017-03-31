@@ -1,18 +1,14 @@
 extends Node
 
-var pre_meteor = preload("res://scenes/meteoro.tscn")
-var intervalo = 2
+var prefabrica = preload("res://scenes/fabricaDeMeteoros.tscn")
+var fabrica
 
 func _ready():
-	set_process(true)
+	fabrica = prefabrica.instance()
 	pass
 
-func _process(delta):
-	if intervalo > 0:
-		intervalo -= delta
-	else: 
-		intervalo = rand_range(0.3,1)
-		var meteoro = pre_meteor.instance()
-		meteoro.set_pos(Vector2(rand_range(30,600),-40))
-		get_owner().add_child(meteoro)
-	pass
+func _on_timer_timeout():
+	get_node("timer").set_wait_time(rand_range(1.5,3));
+	var meteoro = fabrica.geraMeteoroRandom()
+	meteoro.set_pos(Vector2(rand_range(30,600),-40))
+	get_owner().add_child(meteoro)

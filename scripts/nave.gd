@@ -50,3 +50,11 @@ func set_arma(index):
 	arma = armas[index]
 	pass
 	
+
+
+func _on_nave_area_enter( area ):
+	if area.is_in_group(game.GRUPO_INIMIGO):
+		if area.has_method("aplicar_dano"):
+			area.aplicar_dano(200)
+			game.lifes -= 1
+	pass # replace with function body
