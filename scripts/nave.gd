@@ -55,7 +55,8 @@ func retirarVida():
 	game.lifes -= 1
 	get_node("escudo").ativa(segundosEscudo)
 	pass
-	
+
+##ATENÇÂO é possivel usar a diretiva yield para finalizar uma animação
 func _on_nave_area_enter( area ):
 	if area.is_in_group(game.GRUPO_INIMIGO):
 		if area.has_method("aplicar_dano"):

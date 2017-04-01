@@ -32,7 +32,6 @@ pontos = 10
 [node name="body" type="Sprite" parent="."]
 
 texture = ExtResource( 1 )
-modulate = Color( 0.945313, 0.384033, 0.397188, 1 )
 
 [node name="polyCollider" type="CollisionPolygon2D" parent="."]
 

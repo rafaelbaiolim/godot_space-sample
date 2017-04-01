@@ -1,0 +1,40 @@
+[gd_scene load_steps=2 format=1]
+
+[sub_resource type="ColorRamp" id=16]
+
+offsets = FloatArray( 0, 0.0116959, 1 )
+colors = ColorArray( 0, 0, 0, 1, 0.916575, 0.933594, 0.0656433, 1, 0.960938, 0.295612, 0.0487976, 1 )
+
+[node name="boost" type="Particles2D"]
+
+visibility/behind_parent = true
+transform/pos = Vector2( -0.146651, 33.2036 )
+transform/scale = Vector2( 1.1034, 1 )
+config/amount = 100
+config/lifetime = 1.0
+config/preprocess = 1.0
+config/local_space = false
+params/direction = 0.0
+params/spread = 15.0
+params/linear_velocity = 20.0
+params/spin_velocity = 0.0
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 9.8
+params/radial_accel = 0.0
+params/tangential_accel = 0.0
+params/damping = 1.0
+params/initial_angle = 0.0
+params/initial_size = 1.0
+params/final_size = 1.0
+params/hue_variation = 0.0
+params/anim_speed_scale = 1.0
+params/anim_initial_pos = 0.0
+randomness/spread = 0.38
+randomness/linear_velocity = 0.16
+randomness/spin_velocity = 0.38
+randomness/orbit_velocity = 1.0
+randomness/tangential_accel = 0.41
+color/color_ramp = SubResource( 16 )
+
+
