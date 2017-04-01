@@ -50,11 +50,17 @@ func set_arma(index):
 	arma = armas[index]
 	pass
 	
-
-
+func retirarVida():
+	game.lifes -= 1
+	pass
+	
 func _on_nave_area_enter( area ):
 	if area.is_in_group(game.GRUPO_INIMIGO):
 		if area.has_method("aplicar_dano"):
 			area.aplicar_dano(200)
-			game.lifes -= 1
+			retirarVida()
+	elif area.is_in_group(game.GRUPO_TIRO_INIMIGO):
+		if area.has_method("destruir"):
+			area.destruir()
+			retirarVida()
 	pass # replace with function body

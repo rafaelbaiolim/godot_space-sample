@@ -1,6 +1,7 @@
 extends Node
 const GRUPO_INIMIGO = "inimigos"
 const GRUPO_NAVE = "nave" 
+const GRUPO_TIRO_INIMIGO = "tiroInimigo"
 
 var score = 0 setget setScore
 var lifes = 3  setget setLifes

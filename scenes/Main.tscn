@@ -1,40 +1,39 @@
-[gd_scene load_steps=15 format=1]
+[gd_scene load_steps=16 format=1]
 
 [ext_resource path="res://sprites/PNG/pixelBranco.png" type="Texture" id=1]
 [ext_resource path="res://fonts/score.fnt" type="BitmapFont" id=2]
 [ext_resource path="res://scenes/meteorSpawner.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/Nave.tscn" type="PackedScene" id=4]
-[ext_resource path="res://sprites/PNG/Effects/star1.png" type="Texture" id=5]
-[ext_resource path="res://scenes/power_up_tiro_rapido.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scenes/power_up_tiro_duplo.tscn" type="PackedScene" id=7]
-[ext_resource path="res://sprites/PNG/UI/playerLife1_blue.png" type="Texture" id=8]
+[ext_resource path="res://scenes/inimigoSpawner.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/Nave.tscn" type="PackedScene" id=5]
+[ext_resource path="res://sprites/PNG/Effects/star1.png" type="Texture" id=6]
+[ext_resource path="res://scenes/power_up_tiro_rapido.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/power_up_tiro_duplo.tscn" type="PackedScene" id=8]
+[ext_resource path="res://sprites/PNG/UI/playerLife1_blue.png" type="Texture" id=9]
 
-[sub_resource type="GDScript" id=4]
+[sub_resource type="GDScript" id=1]
 
 resource/name = "pauser"
 script/source = "extends CanvasLayer\n\nfunc _ready():\n\tset_process_input(true)\t\n\tpass\n\nfunc _input(event):\n\t#event.is_echo, deixar apertado\n\t#pauseMode -> Process, não para o canvar pauser\n\tif event.is_action_pressed(\"pause\") && !event.is_echo():\n\t\tget_tree().set_pause(!get_tree().is_paused())\n\t\t\n\t\tif get_tree().is_paused():\n\t\t\tget_node(\"paused\").show()\n\t\t\tget_node(\"preto_branco\").show()\n\t\telse:\n\t\t\tget_node(\"paused\").hide()\t\n\t\t\tget_node(\"preto_branco\").hide()"
 
-[sub_resource type="CanvasItemShader" id=5]
+[sub_resource type="CanvasItemShader" id=2]
 
 _code = { "fragment":"vec4 pixel_tela = vec4(texscreen(SCREEN_UV),1);\nfloat media = (pixel_tela.r + pixel_tela.g + pixel_tela.b) / 3;\nCOLOR = vec4(media,media,media,1);", "fragment_ofs":0, "light":"", "light_ofs":0, "vertex":"", "vertex_ofs":0 }
 
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=3]
 
-shader/shader = SubResource( 5 )
+shader/shader = SubResource( 2 )
 shader/shading_mode = 0
 
-[sub_resource type="GDScript" id=1]
+[sub_resource type="GDScript" id=4]
 
-resource/name = "parallax_camera"
 script/source = "extends Camera2D\nvar velocidade = 50\nvar vibracao = 0 #vibração da câmera\nfunc _ready():\n\tset_process(true)\n\tpass\n\nfunc _process(delta):\n\tset_offset(get_offset() + Vector2(0,-1) * velocidade * delta) # -1 camera se mova para cima , estrelas descem\n\t\n\tif vibracao > 0:\n\t\tset_pos(Vector2(cos(rad2deg(vibracao)),sin(rad2deg(vibracao)) * 5))\n\t\tvibracao -= delta\n\telse:\n\t\tset_pos(Vector2(0,0))\t\t\n\tpass\n\nfunc vibrar_tela():\n\tvibracao = 0.5\n\tpass"
 
-[sub_resource type="GDScript" id=2]
+[sub_resource type="GDScript" id=5]
 
 script/source = "extends Label\n\n# class member variables go here, for example:\n# var a = 2\n# var b = \"textvar\"\n\nfunc _ready():\n\tgame.connect(\"score_changed\",self,\"_on_score_changed\") \n\tpass\n\n#só muda quando o meteoro muda\nfunc _on_score_changed():\n\tset_text(str(game.score))\n\t"
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=6]
 
-resource/name = "drawVida"
 script/source = "extends Node2D\n\nexport(Texture) var textura \n\nfunc _ready():\n\tgame.connect(\"lifes_changed\",self,\"_on_lifes_changed\")\n\tpass\n\nfunc _on_lifes_changed():\n\tupdate()\n\tpass\n\t\nfunc _draw():\n\tfor n in range(0 , game.lifes):\n\t\tdraw_texture(textura, Vector2(n * textura.get_width(), 0)) #consturtor vazio vector2 = vec2(0,0)\n\t\t\n\tpass\n"
 
 [node name="Main" type="CanvasLayer"]
@@ -47,16 +46,17 @@ scale = Vector2( 1, 1 )
 [node name="pauser" type="CanvasLayer" parent="."]
 
 process/pause_mode = 2
+editor/display_folded = true
 layer = 12
 offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
-script/script = SubResource( 4 )
+script/script = SubResource( 1 )
 
 [node name="preto_branco" type="TextureFrame" parent="pauser"]
 
 visibility/visible = false
-material/material = SubResource( 6 )
+material/material = SubResource( 3 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
@@ -90,6 +90,8 @@ max_lines_visible = -1
 
 [node name="meteorSpawner" parent="." instance=ExtResource( 3 )]
 
+[node name="inimigoSpawner" parent="." instance=ExtResource( 4 )]
+
 [node name="camera" type="Camera2D" parent="."]
 
 editor/display_folded = true
@@ -109,9 +111,9 @@ drag_margin/left = 0.2
 drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
-script/script = SubResource( 1 )
+script/script = SubResource( 4 )
 
-[node name="nave" parent="camera" instance=ExtResource( 4 )]
+[node name="nave" parent="camera" instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 322.48, 445.464 )
 
@@ -140,42 +142,42 @@ motion/mirroring = Vector2( 0, 480 )
 [node name="estrela45" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 587.716, 313.424 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela49" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 1137.31, 892.943 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela48" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 215.886, 89.6035 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela49 3" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 166.912, 690.889 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela46" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 1083.72, 473.424 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela49 2" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 790.723, 895.58 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela47" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 441.083, 554.378 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela49 4" type="Sprite" parent="ParallaxBackground/estrelas"]
 
 transform/pos = Vector2( 70.9995, 895.53 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrelinhas" type="ParallaxLayer" parent="ParallaxBackground"]
 
@@ -189,32 +191,32 @@ motion/mirroring = Vector2( 0, 480 )
 visibility/visible = false
 transform/pos = Vector2( 301.826, 869.057 )
 transform/scale = Vector2( 2, 2 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela1" type="Sprite" parent="ParallaxBackground/estrelinhas"]
 
 transform/pos = Vector2( 1678.83, 219.057 )
 transform/scale = Vector2( 2, 2 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela2" type="Sprite" parent="ParallaxBackground/estrelinhas"]
 
 visibility/visible = false
 transform/pos = Vector2( 2051.83, 1519.06 )
 transform/scale = Vector2( 2, 2 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="estrela3" type="Sprite" parent="ParallaxBackground/estrelinhas"]
 
 transform/pos = Vector2( 1234.73, 2331.52 )
 transform/scale = Vector2( 1.71493, 1.71424 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
-[node name="power_up_tiro_rapido" parent="." instance=ExtResource( 6 )]
+[node name="power_up_tiro_rapido" parent="." instance=ExtResource( 7 )]
 
 transform/pos = Vector2( 450.284, 439.401 )
 
-[node name="power_up_tiro_rapido 2" parent="." instance=ExtResource( 7 )]
+[node name="power_up_tiro_rapido 2" parent="." instance=ExtResource( 8 )]
 
 transform/pos = Vector2( 179.373, 446.173 )
 
@@ -243,12 +245,12 @@ align = 2
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-script/script = SubResource( 2 )
+script/script = SubResource( 5 )
 
 [node name="vidas" type="Node2D" parent="HUD"]
 
 transform/pos = Vector2( 16.5807, 15.0734 )
-script/script = SubResource( 3 )
-textura = ExtResource( 8 )
+script/script = SubResource( 6 )
+textura = ExtResource( 9 )
 
 
