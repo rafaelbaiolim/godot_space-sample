@@ -20,7 +20,7 @@ cubic_interp = true
 loop = true
 lookahead = 4.0
 
-[node name="Area2D" parent="follow" instance=ExtResource( 2 )]
+[node name="inimigo" parent="follow" instance=ExtResource( 2 )]
 
 transform/pos = Vector2( 0, 3.01468 )
 

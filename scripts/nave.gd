@@ -6,6 +6,7 @@ var TiroDuplo = preload("res://scripts/class/arma/TiroDuplo.gd")
 
 var velocidade = 350 #deltatime (20 px por sec, esta na funcao _process
 var arma
+var segundosEscudo = 2
 
 #imagina uma lista aqui :) 
 var armas = [
@@ -52,6 +53,7 @@ func set_arma(index):
 	
 func retirarVida():
 	game.lifes -= 1
+	get_node("escudo").ativa(segundosEscudo)
 	pass
 	
 func _on_nave_area_enter( area ):

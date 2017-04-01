@@ -1,14 +1,32 @@
-[gd_scene load_steps=4 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://scripts/inimigo.gd" type="Script" id=1]
 [ext_resource path="res://sprites/PNG/playerShip2_orange.png" type="Texture" id=2]
+[ext_resource path="res://sprites/PNG/Damage/Explosion.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
 radius = 10.0
 
-[node name="Area2D" type="Area2D"]
+[sub_resource type="Animation" id=2]
+
+resource/name = "explosao"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 0, 11 ] }
+tracks/1/type = "method"
+tracks/1/path = NodePath("..")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = { "times":FloatArray( 1 ), "transitions":FloatArray( 1 ), "values":[ { "args":[  ], "method":"queue_free" } ] }
+
+[node name="inimigo" type="Area2D"]
 
 input/pickable = true
 shapes/0/shape = SubResource( 1 )
@@ -19,6 +37,8 @@ gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
 script/script = ExtResource( 1 )
+vida = 2
+pontos = 10
 
 [node name="sprite" type="Sprite" parent="."]
 
@@ -45,6 +65,23 @@ autostart = true
 [node name="tiroPosInimigo" type="Position2D" parent="."]
 
 transform/pos = Vector2( 0, 22.5563 )
+
+[node name="explosao" type="Sprite" parent="."]
+
+transform/pos = Vector2( 0.526718, -2.21139 )
+texture = ExtResource( 3 )
+hframes = 12
+
+[node name="anim" type="AnimationPlayer" parent="explosao"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/explosao = SubResource( 2 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = ""
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 

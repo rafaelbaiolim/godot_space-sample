@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=1]
+[gd_scene load_steps=20 format=1]
 
 [ext_resource path="res://scripts/nave.gd" type="Script" id=1]
 [ext_resource path="res://sprites/PNG/playerShip2_blue.png" type="Texture" id=2]
 [ext_resource path="res://sprites/PNG/Parts/gun07.png" type="Texture" id=3]
+[ext_resource path="res://sprites/PNG/Effects/shield3.png" type="Texture" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -63,6 +64,28 @@ points = Vector2Array( -6.86192, -29.7741, -2.66992, -36.5228, 1.51704, -36.9415
 
 custom_solver_bias = 0.0
 points = Vector2Array( -25.6029, -9.15716, 7.86017, 36.8627, -10.7362, 37.2502, -16.5475, 30.2765 )
+
+[sub_resource type="CircleShape2D" id=13]
+
+custom_solver_bias = 0.0
+radius = 10.0
+
+[sub_resource type="GDScript" id=15]
+
+resource/name = "escudo_src"
+script/source = "extends Area2D\nvar ativo = true\n\nfunc _ready():\n\tativa(2)\n\tpass\n\nfunc ativa(segs):\n\tshow()\n\tativo = true\n\tget_node(\"timer\").set_wait_time(segs)\n\tget_node(\"timer\").start()\n\nfunc _on_escudo_area_enter( area ): \n\tif ativo && area.is_in_group(game.GRUPO_INIMIGO):\n\t\tarea.aplicar_dano(3000)\n\t\n\telif ativo && area.is_in_group(game.GRUPO_TIRO_INIMIGO):\n\t\tarea.queue_free()\n\tpass # replace with function body\n\n\nfunc _on_timer_timeout():\n\tativo = false\n\thide()\n\tpass # replace with function body\n"
+
+[sub_resource type="Animation" id=14]
+
+resource/name = "default"
+length = 0.4
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:transform/scale")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = { "times":FloatArray( 0, 0.3 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ] }
 
 [node name="nave" type="Area2D"]
 
@@ -143,6 +166,53 @@ polygon = Vector2Array( -56.2122, 4.09631, -46.1143, 0.940727, -42.3276, -1.5837
 shape_range = Vector2( 0, 11 )
 trigger = false
 
+[node name="escudo" type="Area2D" parent="."]
+
+input/pickable = true
+shapes/0/shape = SubResource( 13 )
+shapes/0/transform = Matrix32( 7.16498, 0, 0, 6.89545, -3.04638, 1.19517 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+script/script = SubResource( 15 )
+
+[node name="Sprite" type="Sprite" parent="escudo"]
+
+transform/pos = Vector2( -2.33592, 1.16796 )
+texture = ExtResource( 4 )
+
+[node name="colision" type="CollisionShape2D" parent="escudo"]
+
+transform/pos = Vector2( -3.04638, 1.19517 )
+transform/scale = Vector2( 7.16498, 6.89545 )
+shape = SubResource( 13 )
+trigger = false
+_update_shape_index = 0
+
+[node name="anim" type="AnimationPlayer" parent="escudo"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/default = SubResource( 14 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "default"
+
+[node name="timer" type="Timer" parent="escudo"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
 [connection signal="area_enter" from="." to="." method="_on_nave_area_enter"]
+
+[connection signal="area_enter" from="escudo" to="escudo" method="_on_escudo_area_enter"]
+
+[connection signal="timeout" from="escudo/timer" to="escudo" method="_on_timer_timeout"]
 
 
