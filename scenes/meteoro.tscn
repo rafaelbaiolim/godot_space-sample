@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=7 format=1]
 
 [ext_resource path="res://sprites/PNG/Meteors/meteorBrown_big3.png" type="Texture" id=1]
-[ext_resource path="res://samples/explosion.wav" type="Sample" id=2]
+[ext_resource path="res://scenes/meteoro_partes/anim.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/meteoro_partes/particula.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/meteoro_partes/sample.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 
@@ -11,68 +13,6 @@ points = Vector2Array( -43.5527, -17.6415, -10.1031, -37.4472, 27.3078, -27.7644
 [sub_resource type="GDScript" id=2]
 
 script/source = "extends Area2D\nvar velocidade = 130\nvar rotacao = 0\nexport var vida = 2\nexport var pontos = 10\n\nfunc _ready():\n\tadd_to_group(game.GRUPO_INIMIGO) #game esta como singleton\n\trandomize()\n\tset_process(true)\n\trotacao = rand_range(-2, 2)\n\tpass\n\t\nfunc _process(delta):\n\tset_pos(get_pos() + Vector2(0,1) * velocidade * delta)\n\trotate(rotacao * delta)\n\tpass\n\t\nfunc aplicar_dano(valor):\n\t#get_node(\"anim\").play(\"hit\")\n\tvida -= valor\n\tif vida <= 0:\n\t\tgame.score += pontos\n\t\t#get_node(\"sample\").play(\"explosion\")\n\t\tset_process(true)\n\t\tset_z(10)\n\t\tremove_from_group(game.GRUPO_INIMIGO)\n\t\tget_node(\"anim\").play(\"destory\")\n\t\t#game.getCamera().vibrar_tela()\n\tpass\n\t\n"
-
-[sub_resource type="Animation" id=3]
-
-length = 1.0
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("body:transform/scale")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = { "times":FloatArray( 0, 0.5, 1 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ Vector2( 1, 1 ), Vector2( 1.4, 1.4 ), Vector2( 0.3, 0.3 ) ] }
-tracks/1/type = "value"
-tracks/1/path = NodePath("body:visibility/opacity")
-tracks/1/interp = 1
-tracks/1/imported = false
-tracks/1/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":0, "values":[ 1.0, 0.0 ] }
-tracks/2/type = "method"
-tracks/2/path = NodePath(".")
-tracks/2/interp = 1
-tracks/2/imported = false
-tracks/2/keys = { "times":FloatArray( 1 ), "transitions":FloatArray( 1 ), "values":[ { "args":[  ], "method":"queue_free" } ] }
-tracks/3/type = "value"
-tracks/3/path = NodePath("particula:config/emitting")
-tracks/3/interp = 1
-tracks/3/imported = false
-tracks/3/keys = { "times":FloatArray( 0, 1 ), "transitions":FloatArray( 1, 1 ), "update":1, "values":[ true, false ] }
-
-[sub_resource type="Animation" id=4]
-
-length = 1.0
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("body:modulate")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = { "times":FloatArray( 0, 0.6, 1 ), "transitions":FloatArray( 1, 1, 1 ), "update":0, "values":[ Color( 0.945313, 0.384033, 0.397188, 1 ), Color( 0.808594, 0.120026, 0.133018, 1 ), Color( 1, 1, 1, 1 ) ] }
-
-[sub_resource type="Animation" id=5]
-
-length = 1.0
-loop = false
-step = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("body:modulate")
-tracks/0/interp = 1
-tracks/0/imported = false
-tracks/0/keys = { "times":FloatArray( 0 ), "transitions":FloatArray( 1 ), "update":0, "values":[ Color( 1, 1, 1, 1 ) ] }
-tracks/1/type = "value"
-tracks/1/path = NodePath("particula:config/emitting")
-tracks/1/interp = 1
-tracks/1/imported = false
-tracks/1/keys = { "times":FloatArray( 0 ), "transitions":FloatArray( 1 ), "update":1, "values":[ false ] }
-
-[sub_resource type="ColorRamp" id=6]
-
-offsets = FloatArray( 0, 0.0760234, 0.473684, 0.853801, 1 )
-colors = ColorArray( 0.976563, 0.976563, 0.976563, 1, 0.861645, 0.976563, 0.0572205, 1, 0.890885, 0.559862, 0.559862, 1, 0.792969, 0.0836334, 0.0836334, 1, 0.339844, 0.00398254, 0.00398254, 1 )
-
-[sub_resource type="SampleLibrary" id=7]
-
-samples/explosion = { "db":0.0, "pitch":1.0, "sample":ExtResource( 2 ) }
 
 [node name="meteoro" type="Area2D"]
 
@@ -101,54 +41,10 @@ polygon = Vector2Array( -43.5527, -17.6415, -10.1031, -37.4472, 27.3078, -27.764
 shape_range = Vector2( 0, 0 )
 trigger = false
 
-[node name="anim" type="AnimationPlayer" parent="."]
+[node name="anim" parent="." instance=ExtResource( 2 )]
 
-playback/process_mode = 1
-playback/default_blend_time = 0.0
-root/root = NodePath("..")
-anims/destory = SubResource( 3 )
-anims/hit = SubResource( 4 )
-anims/idle = SubResource( 5 )
-playback/active = true
-playback/speed = 1.0
-blend_times = [  ]
-autoplay = "idle"
+[node name="particula" parent="." instance=ExtResource( 3 )]
 
-[node name="particula" type="Particles2D" parent="."]
-
-visibility/blend_mode = 1
-config/amount = 300
-config/lifetime = 0.5
-config/emit_timeout = 0.4
-config/emitting = false
-config/explosiveness = 0.21
-params/direction = 90.0
-params/spread = 180.0
-params/linear_velocity = 99.77
-params/spin_velocity = 0.0
-params/orbit_velocity = 0.0
-params/gravity_direction = 0.0
-params/gravity_strength = 0.0
-params/radial_accel = 0.0
-params/tangential_accel = 0.0
-params/damping = 0.0
-params/initial_angle = 0.0
-params/initial_size = 3.0
-params/final_size = 5.0
-params/hue_variation = 0.0
-params/anim_speed_scale = 1.0
-params/anim_initial_pos = 0.0
-color/color_ramp = SubResource( 6 )
-
-[node name="sample" type="SamplePlayer2D" parent="."]
-
-params/volume_db = 0.0
-params/pitch_scale = 1.0
-params/attenuation/min_distance = 1.0
-params/attenuation/max_distance = 2048.0
-params/attenuation/distance_exp = 1.0
-config/polyphony = 1
-config/samples = SubResource( 7 )
-config/pitch_random = 0.0
+[node name="sample" parent="." instance=ExtResource( 4 )]
 
 

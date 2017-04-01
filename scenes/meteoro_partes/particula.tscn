@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=1]
+
+[sub_resource type="ColorRamp" id=1]
+
+offsets = FloatArray( 0, 0.0760234, 0.473684, 0.853801, 1 )
+colors = ColorArray( 0.976563, 0.976563, 0.976563, 1, 0.861645, 0.976563, 0.0572205, 1, 0.890885, 0.559862, 0.559862, 1, 0.792969, 0.0836334, 0.0836334, 1, 0.339844, 0.00398254, 0.00398254, 1 )
+
+[node name="particula" type="Particles2D"]
+
+visibility/blend_mode = 1
+config/amount = 300
+config/lifetime = 0.5
+config/emit_timeout = 0.4
+config/emitting = false
+config/explosiveness = 0.21
+params/direction = 90.0
+params/spread = 180.0
+params/linear_velocity = 99.77
+params/spin_velocity = 0.0
+params/orbit_velocity = 0.0
+params/gravity_direction = 0.0
+params/gravity_strength = 0.0
+params/radial_accel = 0.0
+params/tangential_accel = 0.0
+params/damping = 0.0
+params/initial_angle = 0.0
+params/initial_size = 3.0
+params/final_size = 5.0
+params/hue_variation = 0.0
+params/anim_speed_scale = 1.0
+params/anim_initial_pos = 0.0
+color/color_ramp = SubResource( 1 )
+
+
