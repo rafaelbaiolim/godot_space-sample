@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=1]
+[gd_scene load_steps=18 format=1]
 
 [ext_resource path="res://sprites/PNG/pixelBranco.png" type="Texture" id=1]
 [ext_resource path="res://fonts/score.fnt" type="BitmapFont" id=2]
@@ -9,12 +9,8 @@
 [ext_resource path="res://scenes/power_up_tiro_rapido.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/power_up_tiro_duplo.tscn" type="PackedScene" id=8]
 [ext_resource path="res://sprites/PNG/UI/playerLife1_blue.png" type="Texture" id=9]
-[ext_resource path="res://sprites/controls/flatLight/flatLight03.png" type="Texture" id=10]
-[ext_resource path="res://sprites/controls/shadedLight/shadedLight05.png" type="Texture" id=11]
-[ext_resource path="res://sprites/controls/flatLight/flatLight04.png" type="Texture" id=12]
-[ext_resource path="res://sprites/controls/shadedLight/shadedLight06.png" type="Texture" id=13]
-[ext_resource path="res://sprites/controls/flatLight/flatLight47.png" type="Texture" id=14]
-[ext_resource path="res://sprites/controls/shadedLight/shadedLight49.png" type="Texture" id=15]
+[ext_resource path="res://sprites/controls/flatDark/flatDark04.png" type="Texture" id=10]
+[ext_resource path="res://sprites/controls/flatDark/flatDark05.png" type="Texture" id=11]
 
 [sub_resource type="GDScript" id=1]
 
@@ -100,6 +96,7 @@ max_lines_visible = -1
 
 [node name="camera" type="Camera2D" parent="."]
 
+editor/display_folded = true
 anchor_mode = 0
 rotating = false
 current = true
@@ -120,7 +117,7 @@ script/script = SubResource( 4 )
 
 [node name="nave" parent="camera" instance=ExtResource( 5 )]
 
-transform/pos = Vector2( 322.48, 433.464 )
+transform/pos = Vector2( 322.48, 445.464 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -258,34 +255,28 @@ transform/pos = Vector2( 16.5807, 15.0734 )
 script/script = SubResource( 6 )
 textura = ExtResource( 9 )
 
-[node name="esquerda" type="TouchScreenButton" parent="HUD"]
+[node name="tDireita" type="TouchScreenButton" parent="HUD"]
 
-transform/pos = Vector2( 22.6101, 328.6 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 6.02936, 1.50735 )
+transform/scale = Vector2( 4.21511, 7.87383 )
 normal = ExtResource( 10 )
-pressed = ExtResource( 11 )
+pressed = null
 bitmask = null
 passby_press = false
 action = "esquerda"
-visibility_mode = 1
+visibility_mode = 0
 
-[node name="direita" type="TouchScreenButton" parent="HUD"]
+[node name="tEsquerda" type="TouchScreenButton" parent="HUD"]
 
-transform/pos = Vector2( 536.613, 324.586 )
-normal = ExtResource( 12 )
-pressed = ExtResource( 13 )
+visibility/opacity = 0.0
+transform/pos = Vector2( 320.348, 0.969452 )
+transform/scale = Vector2( 4.20046, 7.80852 )
+normal = ExtResource( 11 )
+pressed = null
 bitmask = null
 passby_press = false
 action = "direita"
-visibility_mode = 1
-
-[node name="tiro" type="TouchScreenButton" parent="HUD"]
-
-transform/pos = Vector2( 541.135, 208.52 )
-normal = ExtResource( 14 )
-pressed = ExtResource( 15 )
-bitmask = null
-passby_press = false
-action = "tiro"
-visibility_mode = 1
+visibility_mode = 0
 
 

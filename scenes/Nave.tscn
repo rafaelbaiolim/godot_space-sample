@@ -71,7 +71,7 @@ points = Vector2Array( -25.6029, -9.15716, 7.86017, 36.8627, -10.7362, 37.2502, 
 custom_solver_bias = 0.0
 radius = 10.0
 
-[sub_resource type="GDScript" id=16]
+[sub_resource type="GDScript" id=14]
 
 resource/name = "escudo_src"
 script/source = "extends Area2D\nvar ativo = true\n\nfunc _ready():\n\tativa(2)\n\tpass\n\nfunc ativa(segs):\n\tshow()\n\tativo = true\n\tget_node(\"timer\").set_wait_time(segs)\n\tget_node(\"timer\").start()\n\nfunc _on_escudo_area_enter( area ): \n\tif ativo && area.is_in_group(game.GRUPO_INIMIGO):\n\t\tarea.aplicar_dano(3000)\n\t\n\telif ativo && area.is_in_group(game.GRUPO_TIRO_INIMIGO):\n\t\tarea.queue_free()\n\tpass # replace with function body\n\n\nfunc _on_timer_timeout():\n\tativo = false\n\thide()\n\tpass # replace with function body\n"
@@ -132,6 +132,7 @@ gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
 script/script = ExtResource( 1 )
+__meta__ = { "_edit_group_":true }
 
 [node name="body" type="Sprite" parent="."]
 
@@ -177,7 +178,7 @@ gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
-script/script = SubResource( 16 )
+script/script = SubResource( 14 )
 
 [node name="Sprite" type="Sprite" parent="escudo"]
 

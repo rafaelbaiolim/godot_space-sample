@@ -23,8 +23,8 @@ func _ready():
 
 #função do while 
 func _process(delta):
-	var direita = 0
-	var esquerda = 0
+	var direita = 0 
+	var esquerda = 0 
 	var cima = 0
 	var baixo = 0
 	
@@ -38,11 +38,10 @@ func _process(delta):
 		esquerda = 0
 	#// com escalar é possivel movimentar diagonalmente
 	set_pos(get_pos() + Vector2(1,0) * velocidade * delta * (direita + esquerda)) # direita + esquerda //macete das duas teclas
-
 	#*****DISPAROS 
-	if Input.is_action_pressed("tiro"):
-		arma.disparar()
-		pass
+	
+	arma.disparar()
+
 		
 	arma.atualizar(delta)
 	pass
